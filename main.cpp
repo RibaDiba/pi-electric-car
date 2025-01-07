@@ -3,6 +3,7 @@
 #include <wiringPi.h>
 
 void startup() {
+
     MotorDriver m1 = MotorDriver(1, 2, 3);
     MotorDriver m2 = MotorDriver(2, 2, 3);
     MotorDriver m3 = MotorDriver(3, 2, 3);
@@ -27,6 +28,11 @@ void test() {
 }
 
 int main() {
-    startup();
+    if (wiringPiSetupGpio() == -1) {
+        std::cerr << "WiringPi setup failed!" << std::endl;
+        return 1;
+    }
+
+    test();
     return 0;
 }
