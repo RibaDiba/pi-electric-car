@@ -14,6 +14,18 @@ void startup() {
     std::cout << "Compiled Correctly";
 }
 
+void test() {
+    MotorDriver m1 = MotorDriver(1, 2, 0);
+    m1.setSpeed(100, 0);
+    std::cout << "Motor 1 spinning Right" << std::endl;
+    delay(2000);
+    m1.setSpeed(100, 1);
+    std::cout << "Motor 1 spinning Left" << std::endl;
+    delay(2000);
+    m1.setSpeed(0, 0);
+    std::cout << "Motor 1 stopped" << std::endl;
+}
+
 int main() {
     startup();
     return 0;
