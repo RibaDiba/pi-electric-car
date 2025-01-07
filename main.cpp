@@ -1,5 +1,6 @@
 #include <iostream>
 #include "MotorLib.h"
+#include <wiringPi.h>
 
 void startup() {
     MotorDriver m1 = MotorDriver(1, 2, 3);

@@ -13,25 +13,25 @@ public:
 
 MotorDriver::MotorDriver(int PWM_pin, int DIR_pin, int I2C_channel)
     : PWM_pin(PWM_pin), DIR_pin(DIR_pin), I2C_channel(I2C_channel) {
-    // pinMode(PWM_pin, PWM_OUTPUT);
-    // pinMode(DIR_pin, OUTPUT);
+    pinMode(PWM_pin, OUTPUT);
+    pinMode(DIR_pin, OUTPUT);
 }
 
 void MotorDriver::setSpeed(int speed, int dir) {
     // Handle direction values
     switch (dir) {
     case 0:
-        // digitalWrite(DIR_pin, LOW);
+        igitalWrite(DIR_pin, LOW);
         break;
     case 1:
-        // digitalWrite(DIR_pin, HIGH);
+        digitalWrite(DIR_pin, HIGH);
         break;
     default:
         std::cout << "Invalid Direction Value" << std::endl;
         return;
     }
 
-    // analogWrite(PWM_pin, speed);
+    analogWrite(PWM_pin, speed);
 }
 
 void MotorDriver::debug_driver(int time, int speed, MotorDriver* array[], int array_size) {
@@ -39,6 +39,6 @@ void MotorDriver::debug_driver(int time, int speed, MotorDriver* array[], int ar
         MotorDriver* obj = array[i];
         obj->setSpeed(200, 0);
         std::cout << obj->PWM_pin << std::endl;
-        // delay(time);
+        delay(time);
     }
 }
