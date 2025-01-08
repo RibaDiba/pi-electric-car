@@ -10,41 +10,39 @@ public:
 
     MotorDriver(int PWM_pin, int DIR_pin, int I2C_channel);
     void setSpeed(int speed, int dir);
-    void debug_driver(int time, int speed, MotorDriver* array[], int array_size);
+    void debug_driver(int time, MotorDriver* array[], int array_size);
 };
 
 MotorDriver::MotorDriver(int PWM_pin, int DIR_pin, int I2C_channel)
     : PWM_pin(PWM_pin), DIR_pin(DIR_pin), I2C_channel(I2C_channel) {
-    pinMode(PWM_pin, OUTPUT);
-    pinMode(DIR_pin, OUTPUT);
-
-    // Initialize softPWM on the PWM pin
-    softPwmCreate(PWM_pin, 0, 100); // PWM pin, initial value (0), range (0-100)
+    pinMode(DIR_pin, OUTPUT);  // Initialize the direction pin as an output
+    softPwmCreate(PWM_pin, 0, 255);  // Initialize PWM on the specified pin with a range of 0-255
 }
 
 void MotorDriver::setSpeed(int speed, int dir) {
     // Handle direction values
     switch (dir) {
-    case 0:
-        digitalWrite(DIR_pin, LOW);
+    case 0:  // Forward
+        digitalWrite(DIR_pin, LOW);  // Set direction to LOW (forward)
         break;
-    case 1:
-        digitalWrite(DIR_pin, HIGH);
+    case 1:  // Reverse
+        digitalWrite(DIR_pin, HIGH); // Set direction to HIGH (reverse)
         break;
     default:
         std::cout << "Invalid Direction Value" << std::endl;
         return;
     }
 
-    // Set the speed using softPWM
-    softPwmWrite(PWM_pin, speed); // PWM pin and speed (0-100)
+    // Set the PWM speed
+    softPwmWrite(PWM_pin, speed);  // Set PWM speed (0-255)
 }
 
-void MotorDriver::debug_driver(int time, int speed, MotorDriver* array[], int array_size) {
+void MotorDriver::debug_driver(int time, MotorDriver* array[], int array_size) {
     for (int i = 0; i < array_size; ++i) {
         MotorDriver* obj = array[i];
-        obj->setSpeed(200, 0); // This might need to be adjusted if "speed" exceeds 100
+        obj->setSpeed(255, 0);  // Set to maximum speed in forward direction
         std::cout << "Motor PWM Pin: " << obj->PWM_pin << std::endl;
-        delay(time); // Delay in milliseconds
+        delay(time);  // Delay in milliseconds
+        obj->setSpeed(0, 0);  // Stop the motor
     }
 }
