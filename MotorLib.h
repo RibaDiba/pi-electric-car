@@ -1,20 +1,9 @@
 #include <iostream>
 #include <wiringPi.h>
-#include <softPwm.h> // For PWM control
+#include <softPwm.h>
+#include <vector>
 
-class Motors {
-    public: 
-        MotorDriver* Motors[];
-        int* encoderArray;
-        Motors(MotorDriver* Motors);
-}
-
-Motors::Motors(int MotorDriver* Motors)
-    : Motors(Motors) {
-        std::cout << "Array Initialized" << std::endl;
-    }
-
-class MotorDriver: public Motors {
+class MotorDriver {
 public:
     int PWM_pin;
     int DIR_pin;
@@ -22,41 +11,50 @@ public:
 
     MotorDriver(int PWM_pin, int DIR_pin, int I2C_channel);
     void setSpeed(int speed, int dir);
-    void debug_driver(int time, MotorDriver* array[], int array_size);
+    void debug_driver(int time);
 };
 
 MotorDriver::MotorDriver(int PWM_pin, int DIR_pin, int I2C_channel)
     : PWM_pin(PWM_pin), DIR_pin(DIR_pin), I2C_channel(I2C_channel) {
-    pinMode(DIR_pin, OUTPUT);  // Initialize the direction pin as an output
-    softPwmCreate(PWM_pin, 0, 255);  // Initialize PWM on the specified pin with a range of 0-255
+    pinMode(DIR_pin, OUTPUT);
+    softPwmCreate(PWM_pin, 0, 255);
 }
 
 void MotorDriver::setSpeed(int speed, int dir) {
-    // Handle direction values
-    switch (dir) {
-    case 0:  // Forward
-        digitalWrite(DIR_pin, LOW);  // Set direction to LOW (forward)
-        break;
-    case 1:  // Reverse
-        digitalWrite(DIR_pin, HIGH); // Set direction to HIGH (reverse)
-        break;
-    default:
+    if (dir == 0) {
+        digitalWrite(DIR_pin, LOW);
+    } else if (dir == 1) {
+        digitalWrite(DIR_pin, HIGH);
+    } else {
         std::cout << "Invalid Direction Value" << std::endl;
         return;
     }
-
-    // Set the PWM speed
-    softPwmWrite(PWM_pin, speed);  // Set PWM speed (0-255)
+    softPwmWrite(PWM_pin, speed);
 }
 
-void MotorDriver::debug_driver(int time, MotorDriver* array[], int array_size) {
-    for (int i = 0; i < array_size; ++i) {
-        MotorDriver* obj = array[i];
-        obj->setSpeed(255, 0);  // Set to maximum speed in forward direction
-        std::cout << "Motor PWM Pin: " << obj->PWM_pin << std::endl;
-        delay(time);  // Delay in milliseconds
-        obj->setSpeed(0, 0);  // Stop the motor
+void MotorDriver::debug_driver(int time) {
+    setSpeed(255, 0);
+    std::cout << "Motor PWM Pin: " << PWM_pin << std::endl;
+    delay(time);
+    setSpeed(0, 0);
+}
+
+class Motors {
+private:
+    std::vector<MotorDriver*> motorArray;
+
+public:
+    Motors(std::vector<MotorDriver*> motors);
+    void debugAll(int time);
+};
+
+Motors::Motors(std::vector<MotorDriver*> motors)
+    : motorArray(motors) {
+    std::cout << "Motors Initialized with " << motors.size() << " motor(s)." << std::endl;
+}
+
+void Motors::debugAll(int time) {
+    for (auto motor : motorArray) {
+        motor->debug_driver(time);
     }
 }
-
-

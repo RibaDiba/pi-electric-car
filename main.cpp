@@ -8,7 +8,7 @@ MotorDriver m2 = MotorDriver(2, 3, 0);
 MotorDriver m3 = MotorDriver(4, 5, 0);
 MotorDriver m3 = MotorDriver(12, 13, 0);
 
-Motors array = Motors(&m1, &m2, &m3, &m4);
+Motors array = Motors({&m1, &m2, &m3, &m4});
 
 void test() {
     m1.setSpeed(100, 0);  
@@ -32,6 +32,7 @@ int main() {
     //  test();
     // m1.debug_driver(2000, MotorsTemp, 2);
     // m1.debug_driver(2000, Motors, 4);
+    array.debugAll(2000);
 
     return 0;
 }
