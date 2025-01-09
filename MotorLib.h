@@ -2,7 +2,19 @@
 #include <wiringPi.h>
 #include <softPwm.h> // For PWM control
 
-class MotorDriver {
+class Motors {
+    public: 
+        MotorDriver* Motors[];
+        int* encoderArray;
+        Motors(MotorDriver* Motors);
+}
+
+Motors::Motors(int MotorDriver* Motors)
+    : Motors(Motors) {
+        std::cout << "Array Initialized" << std::endl;
+    }
+
+class MotorDriver: public Motors {
 public:
     int PWM_pin;
     int DIR_pin;
@@ -46,3 +58,5 @@ void MotorDriver::debug_driver(int time, MotorDriver* array[], int array_size) {
         obj->setSpeed(0, 0);  // Stop the motor
     }
 }
+
+
