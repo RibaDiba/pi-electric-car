@@ -33,8 +33,11 @@ void MotorDriver::setSpeed(int speed, int dir) {
 }
 
 void MotorDriver::debug_driver(int time) {
-    setSpeed(255, 0);
-    std::cout << "Motor PWM Pin: " << PWM_pin << std::endl;
+    setSpeed(100, 0);
+    std::cout << "Motor PWM Pin moving 0: " << PWM_pin << std::endl;
+    delay(time);
+    setSpeed(100, 1);
+    std::cout << "Motor PWM Pin moving 1: " << PWM_pin << std::endl;
     delay(time);
     setSpeed(0, 0);
 }
