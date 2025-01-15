@@ -5,7 +5,7 @@
 
  void test() {
 
-    MotorDriver m1 = MotorDriver(0, 1, 0); 
+    MotorDriver m1 = MotorDriver(28, 29, 0); 
     m1.setSpeed(100, 0);  
     std::cout << "Motor 1 spinning Right" << std::endl;
     delay(2000); 
@@ -32,9 +32,10 @@ int main() {
 
     Motors array = Motors({&m1, &m2, &m3, &m4});
    
-    // m1.debug_driver(2000, MotorsTemp, 2);
-    // m1.debug_driver(2000, Motors, 4);
-    array.debugAll(2000);
+    //array.debugAll(2000);
+    array.spinInPlace(20, 1000);
     while (true) {m1.setSpeed(0,0); m2.setSpeed(0,0); m3.setSpeed(0,0); m4.setSpeed(0,0);}
+
+    // test();
     return 0;
 }

@@ -43,12 +43,10 @@ void MotorDriver::debug_driver(int time) {
 }
 
 class Motors {
-private:
-    std::vector<MotorDriver*> motorArray;
-
 public:
     Motors(std::vector<MotorDriver*> motors);
     void debugAll(int time);
+    void spinInPlace(int time, int speed);
 };
 
 Motors::Motors(std::vector<MotorDriver*> motors)
@@ -56,8 +54,21 @@ Motors::Motors(std::vector<MotorDriver*> motors)
     std::cout << "Motors Initialized with " << motors.size() << " motor(s)." << std::endl;
 }
 
+std::vector<MotorDriver*> motorArray;
+
 void Motors::debugAll(int time) {
     for (auto motor : motorArray) {
         motor->debug_driver(time);
     }
 }
+
+void spinInPlace(int time, int speed) {
+    motorArray[0]->setSpeed(20, 0);
+    motorArray[1]->setSpeed(20, 0);
+
+    motorArray[2]->setSpeed(20, 1);
+    motorArray[3]->setSpeed(20, 1);
+    delay(time);
+}
+	
+
