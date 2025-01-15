@@ -4,14 +4,14 @@
 #include <vector>
 
 class MotorDriver {
-public:
-    int PWM_pin;
-    int DIR_pin;
-    int I2C_channel;
+    public:
+        int PWM_pin;
+        int DIR_pin;
+        int I2C_channel;
 
-    MotorDriver(int PWM_pin, int DIR_pin, int I2C_channel);
-    void setSpeed(int speed, int dir);
-    void debug_driver(int time);
+        MotorDriver(int PWM_pin, int DIR_pin, int I2C_channel);
+        void setSpeed(int speed, int dir);
+        void debug_driver(int time);
 };
 
 MotorDriver::MotorDriver(int PWM_pin, int DIR_pin, int I2C_channel)
@@ -49,11 +49,17 @@ private:
 public:
     Motors(std::vector<MotorDriver*> motors);
     void debugAll(int time);
+    void tcaselect(uint8_t i);
+    void debug_magencoders();
+    void init_multiplex();
+    int fd;
 };
 
 Motors::Motors(std::vector<MotorDriver*> motors)
     : motorArray(motors) {
     std::cout << "Motors Initialized with " << motors.size() << " motor(s)." << std::endl;
+
+    init_multiplex();
 }
 
 void Motors::debugAll(int time) {
