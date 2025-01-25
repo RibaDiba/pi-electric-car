@@ -33,7 +33,8 @@ int main() {
     Motors array = Motors({&m1, &m2, &m3, &m4});
    
     //array.debugAll(2000);
-    array.spinInPlace(20, 1000);
+    array.spinInPlace(1000, 20);
+    debug_magencoders();
     while (true) {m1.setSpeed(0,0); m2.setSpeed(0,0); m3.setSpeed(0,0); m4.setSpeed(0,0);}
 
     // test();
