@@ -1,8 +1,17 @@
-move: main.o
-	g++ main.o -o move
+# Compiler and flags
+CXX = g++
+CXXFLAGS = -c -lwiringPi -lm  
+LDFLAGS = -lwiringPi           
 
-main.o: main.cpp
-	g++ -c main.cpp
+# Targets
+TARGET = move
+OBJ = main.o
+
+$(TARGET): $(OBJ)
+	$(CXX) $(OBJ) -o $(TARGET) $(LDFLAGS)
+
+main.o: main.cpp MotorLib.h 
+	$(CXX) $(CXXFLAGS) main.cpp
 
 clean:
-	rm *.o move
+	rm -f *.o $(TARGET)

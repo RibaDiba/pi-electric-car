@@ -25,18 +25,19 @@ int main() {
         return 1;
     }
 
-    MotorDriver m2 = MotorDriver(2, 3, 0);
     MotorDriver m1 = MotorDriver(0, 1, 0); 
-    MotorDriver m3 = MotorDriver(4, 5, 0);
+    MotorDriver m2 = MotorDriver(2, 3, 0);
+    MotorDriver m3 = MotorDriver(28, 29, 0);
     MotorDriver m4 = MotorDriver(12, 13, 0);
 
     Motors array = Motors({&m1, &m2, &m3, &m4});
    
     //array.debugAll(2000);
-    array.spinInPlace(1000, 20);
-    debug_magencoders();
-    while (true) {m1.setSpeed(0,0); m2.setSpeed(0,0); m3.setSpeed(0,0); m4.setSpeed(0,0);}
+    //array.spinInPlace(4000, 20);
+    array.moveForwards(4000, 100);
+    //array.debug_magencoders();
 
+    array.stop();
     // test();
     return 0;
 }

@@ -47,11 +47,9 @@ class Motors {
 public:
     Motors(std::vector<MotorDriver*> motors);
     void debugAll(int time);
-    void tcaselect(uint8_t i);
-    void debug_magencoders();
-    void init_multiplex();
     void spinInPlace(int time, int speed);
-
+    void moveForwards(int time, int speed);
+    void stop();
 private:
     std::vector<MotorDriver*> motorArray;
     int fd;
@@ -67,21 +65,6 @@ void Motors::debugAll(int time) {
     for (auto motor : motorArray) {
         motor->debug_driver(time);
     }
-}
-
-void Motors::tcaselect(uint8_t i) {
-    std::cout << "TCA Select not implemented. Selected channel: " << static_cast<int>(i) << std::endl;
-    // Implement I2C multiplexer channel selection if required
-}
-
-void Motors::debug_magencoders() {
-    std::cout << "Debugging magnetic encoders not implemented." << std::endl;
-    // Implement debugging of encoders if required
-}
-
-void Motors::init_multiplex() {
-    std::cout << "Initializing multiplexer not implemented." << std::endl;
-    // Implement multiplexer initialization if required
 }
 
 void Motors::spinInPlace(int time, int speed) {
@@ -100,4 +83,24 @@ void Motors::spinInPlace(int time, int speed) {
     for (auto motor : motorArray) {
         motor->setSpeed(0, 0);
     }
+}
+
+void Motors::moveForwards(int time, int speed) {
+    if (motorArray.size() < 4) {
+        std::cerr << "Not enough Motors" << std::endl;
+        return;
+    }
+
+    motorArray[0]->setSpeed(speed, 0);
+    motorArray[1]->setSpeed(speed, 0);
+    motorArray[2]->setSpeed(speed, 1);
+    motorArray[3]->setSpeed(speed, 1);
+    delay(time);
+}
+
+void Motors::stop() {
+    for (auto motor : motorArray) {
+        motor->setSpeed(0, 0);
+    }
+    std::cout << "Stopped" << std::endl;
 }
