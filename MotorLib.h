@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <wiringPi.h>
 #include <softPwm.h>
@@ -14,6 +15,9 @@ public:
     void setSpeed(int speed, int dir);
     void debug_driver(int time);
 };
+
+// typedef for clarity 
+typedef std::vector<MotorDriver*> motorArray_t;
 
 MotorDriver::MotorDriver(int PWM_pin, int DIR_pin, int I2C_channel)
     : PWM_pin(PWM_pin), DIR_pin(DIR_pin), I2C_channel(I2C_channel) {
@@ -45,20 +49,19 @@ void MotorDriver::debug_driver(int time) {
 
 class Motors {
 public:
-    Motors(std::vector<MotorDriver*> motors);
+    Motors(motorArray_t motors);
     void debugAll(int time);
     void spinInPlace(int time, int speed);
     void moveForwards(int time, int speed);
     void stop();
 private:
-    std::vector<MotorDriver*> motorArray;
+    motorArray_t motorArray;
     int fd;
 };
 
-Motors::Motors(std::vector<MotorDriver*> motors)
+Motors::Motors(motorArray_t motors)
     : motorArray(motors) {
     std::cout << "Motors Initialized with " << motors.size() << " motor(s)." << std::endl;
-    init_multiplex();
 }
 
 void Motors::debugAll(int time) {
@@ -98,6 +101,7 @@ void Motors::moveForwards(int time, int speed) {
     delay(time);
 }
 
+// stops
 void Motors::stop() {
     for (auto motor : motorArray) {
         motor->setSpeed(0, 0);

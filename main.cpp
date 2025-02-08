@@ -1,6 +1,7 @@
 #include <iostream>
 #include "MotorLib.h"
 #include <wiringPi.h>
+#include "Joycon.h"
 
 
  void test() {
@@ -31,12 +32,9 @@ int main() {
     MotorDriver m4 = MotorDriver(12, 13, 0);
 
     Motors array = Motors({&m1, &m2, &m3, &m4});
-   
-    //array.debugAll(2000);
-    //array.spinInPlace(4000, 20);
-    array.moveForwards(4000, 100);
-    //array.debug_magencoders();
+    Joycon left = Joycon(0x057E, 0x2006, {&m1, &m2, &m3, &m4});
 
+    left.getValues(200);
     array.stop();
     // test();
     return 0;
