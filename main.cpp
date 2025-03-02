@@ -28,6 +28,11 @@ int main() {
     left.AdjustableSpeed({20, 40, 100, 120});
     // array.stop();
     // test();
+    std::cout << left.initJoycon() << std::endl;
+    if (left.initJoycon() == 1) {
+        std::cout << "Error handled" << std::endl;
+        return 1;
+    }
 
     array.stop();
     return 0;

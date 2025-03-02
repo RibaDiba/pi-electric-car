@@ -29,6 +29,9 @@ public:
 Joycon::Joycon(unsigned short vendorId, unsigned short productId, std::vector<MotorDriver*> motors)
     : Motors(motors), vendorId(vendorId), productId(productId) {
      device = hid_open(vendorId, productId, NULL);  // Corrected variable assignment
+    if (initJoycon() == 1) {
+        return;
+    }
 }
 
 int Joycon::initJoycon() {
@@ -58,11 +61,6 @@ int Joycon::AdjustableSpeed(const std::vector<int>& arrOfSpeeds) {
 
     int currentSpeed = arrOfSpeeds[0];
     int currentSpeedIndex = 0;
-
-    if (!device) {
-        std::cerr << "Failed to open Joy-Con device!" << std::endl;
-        return 1;
-    }
 
     while (true) {
         int bytesRead = hid_read(device, data, sizeof(data));  // Read the data from the device
@@ -181,7 +179,6 @@ int Joycon::AdjustableSpeed(const std::vector<int>& arrOfSpeeds) {
             
         } else {
             std::cerr << "Could not read" << std::endl;
-            return 1;
         }
     }
 
