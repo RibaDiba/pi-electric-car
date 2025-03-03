@@ -24,8 +24,8 @@ int main() {
 
     Motors array = Motors({&m1, &m2, &m3, &m4});
     Joycon left = Joycon(0x057E, 0x2006, {&m1, &m2, &m3, &m4});
-
-    left.AdjustableSpeed({20, 40, 100, 120});
+//    test();
+    left.AdjustableSpeed({100, 150, 200, 250});
     // array.stop();
     // test();
     std::cout << left.initJoycon() << std::endl;
