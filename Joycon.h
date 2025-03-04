@@ -7,23 +7,24 @@
 #include <chrono>  
 
 class Joycon:public Motors {
-public:
-    unsigned short vendorId;
-    unsigned short productId;
-    hid_device *device;
-    struct Speeds {
-        int rSpeed;
-        int lSpeed;
-    };
-    Speeds MotorSpeeds;
-    // this is temp
-    std::string state = "Stopped";
+    public:
+        unsigned short vendorId;
+        unsigned short productId;
+        hid_device *device;
+        struct Speeds {
+            int rSpeed;
+            int lSpeed;
+        };
+        Speeds MotorSpeeds;
+        // this is temp
+        std::string state = "Stopped";
 
-    Joycon(unsigned short vendorId, unsigned short productId, std::vector<MotorDriver*> motors);
-    int initJoycon();
-    void test();
-    void JoyconMode(int maxSpeed);
-    int AdjustableSpeed(const std::vector<int>&arrOfSpeeds);
+        Joycon(unsigned short vendorId, unsigned short productId, std::vector<MotorDriver*> motors);
+        int initJoycon();
+        void test();
+        void JoyconMode(int maxSpeed);
+        int AdjustableSpeed(const std::vector<int>&arrOfSpeeds);
+
 };
 
 Joycon::Joycon(unsigned short vendorId, unsigned short productId, std::vector<MotorDriver*> motors)

@@ -1,11 +1,10 @@
 #include <iostream>
-#include "MotorLib.h"
+#include "MotorLib/MotorLib.h"
 #include <wiringPi.h>
-#include "Joycon.h"
+#include "Joycon/Joycon.h"
 
 
  void test() {
-
     MotorDriver m1 = MotorDriver(0, 1, 0); 
     m1.debug_driver(4000);
     while (true) {m1.setSpeed(0, 0);}
@@ -24,10 +23,9 @@ int main() {
 
     Motors array = Motors({&m1, &m2, &m3, &m4});
     Joycon left = Joycon(0x057E, 0x2006, {&m1, &m2, &m3, &m4});
-//    test();
+
     left.AdjustableSpeed({100, 150, 200, 250});
-    // array.stop();
-    // test();
+
     std::cout << left.initJoycon() << std::endl;
     if (left.initJoycon() == 1) {
         std::cout << "Error handled" << std::endl;
