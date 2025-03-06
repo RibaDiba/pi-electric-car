@@ -1,7 +1,7 @@
 #pragma once
 #include "MotorLib.h"
 
-Motors::Motors(motorArray_t motors)
+Motors::Motors(MotorType::motorArray_t motors)
     : motorArray(motors) {
     std::cout << "Motors Initialized with " << motors.size() << " motor(s)." << std::endl;
 }
@@ -23,17 +23,17 @@ void Motors::stop() {
 /* These functions below are only for joycon movement */
 
 void Motors::forwards(int speed) {
-    motorArray[0]->setSpeed(speed, 0);
+    motorArray[0]->setSpeed(speed, 1);
     motorArray[1]->setSpeed(speed, 0);
     motorArray[2]->setSpeed(speed, 1);
-    motorArray[3]->setSpeed(speed, 1);
+    motorArray[3]->setSpeed(speed, 0);
 }
 
 void Motors::backwards(int speed) {
-    motorArray[0]->setSpeed(speed, 1);
+    motorArray[0]->setSpeed(speed, 0);
     motorArray[1]->setSpeed(speed, 1);
     motorArray[2]->setSpeed(speed, 0);
-    motorArray[3]->setSpeed(speed, 0);
+    motorArray[3]->setSpeed(speed, 1);
 }
 
 void Motors::spinRight(int speed) {
@@ -63,4 +63,3 @@ void Motors::turnLeft(int speed) {
     motorArray[2]->setSpeed(speed, 0);
     motorArray[3]->setSpeed(speed, 1);
 }
-

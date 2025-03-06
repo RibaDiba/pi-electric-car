@@ -76,9 +76,6 @@ int Joycon::AdjustableSpeed(const std::vector<int>& arrOfSpeeds) {
           } 
 
           int rawData = hid_read(device, data, sizeof(data));
-          if (rawData > 0 || !rawData) {
-               std::cerr << "some error" << std::endl;
-          }
 
           // handle button data
           uint8_t buttonData = data[5];

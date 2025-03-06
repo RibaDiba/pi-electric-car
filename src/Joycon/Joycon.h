@@ -1,6 +1,6 @@
 #pragma once 
 
-#include "src/MotorLib/MotorLib.h"
+#include "../MotorLib/MotorLib.h"
 #include <hidapi/hidapi.h>
 #include <vector>
 #include <iostream>

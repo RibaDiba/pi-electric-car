@@ -5,6 +5,9 @@
 #include <vector>
 #include <cstdint>
 
+// Forward declaration of MotorDriver
+class MotorDriver;
+
 namespace MotorType {
     typedef std::vector<MotorDriver*> motorArray_t;
 }
