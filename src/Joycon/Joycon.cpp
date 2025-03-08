@@ -3,7 +3,7 @@
 
 Joycon::Joycon(unsigned short vendorId, unsigned short productId, std::vector<MotorDriver*> motors)
     : Motors(motors), vendorId(vendorId), productId(productId) {
-     device = hid_open(vendorId, productId, NULL);  // Corrected variable assignment
+     device = hid_open(vendorId, productId, NULL); 
 }
 
 long Joycon::map(long x, long in_min, long in_max, long out_min, long out_max) {
@@ -17,17 +17,15 @@ int Joycon::initJoycon() {
           return 1;
      }
 
-     device = hid_open(vendorId, productId, NULL);  // Corrected variable assignment
+     device = hid_open(vendorId, productId, NULL); 
      if (!device) {
-          std::cerr << "Failed to open Joy-Con device!" << std::endl;
           return 1;
      } else {
         return 0;
      }
 }
 
-std::string Joycon::handleJoystickValues(uint8_t rawX, uint8_t rawY) {
-     std::string state = "";
+JoyconState Joycon::handleJoystickValues(uint8_t rawX, uint8_t rawY) {
      rawX = ((rawX & 0x0F) << 4) | ((rawX & 0xF0) >> 4);
 
      int joystickX = static_cast<int>(rawX);
@@ -37,19 +35,21 @@ std::string Joycon::handleJoystickValues(uint8_t rawX, uint8_t rawY) {
      joystickX = map(joystickX, 55, 215, 75, 190);
      int joystickY = static_cast<int>(rawY);
 
+     // output for joystick debugging
+     // std::cout << "Joystick X: " << joystickX << " Joystick Y: " << joystickY << std::endl;
+
      if (joystickY > 210) {
-          state = "moving Forwards";
+          return JoyconState::FOWARDS;
      } else if (joystickY < 80) {
-          state = "moving Backwards";
-     } else if (joystickX > 70 && joystickX < 100 && joystickY > 150 && joystickY <= 209) {
-          state = "LStraight";
-     } else if (joystickX > 150 && joystickY > 150 && joystickY <= 209) {
-          state = "RStraight";
+          return JoyconState::BACKWARDS;
+     } else if (joystickX > 160) {
+          return JoyconState::SPIN_RIGHT;
+     } else if (joystickX < 80) {
+          return JoyconState::SPIN_LEFT;
      } else {
-          state = "stopped";
+          return JoyconState::STOPPED;
      }
 
-     return state;
 }
 
 int Joycon::AdjustableSpeed(const std::vector<int>& arrOfSpeeds) {
@@ -77,6 +77,11 @@ int Joycon::AdjustableSpeed(const std::vector<int>& arrOfSpeeds) {
 
           int rawData = hid_read(device, data, sizeof(data));
 
+          if (rawData < 0) {
+               std::cerr << "Failed to Open" << std::endl;
+               return 1;
+          }
+
           // handle button data
           uint8_t buttonData = data[5];
           int buttonState = static_cast<int>(buttonData);
@@ -84,7 +89,7 @@ int Joycon::AdjustableSpeed(const std::vector<int>& arrOfSpeeds) {
           bool downButtonState = false;
 
           if (buttonState == 1) {  // Down button pressed
-           auto now = std::chrono::steady_clock::now();
+               auto now = std::chrono::steady_clock::now();
                if (now - lastPressTimeDown > debounceInterval) {
                     currentSpeedIndex--;  // Decrease the index
                     if (currentSpeedIndex < 0) {
@@ -111,24 +116,26 @@ int Joycon::AdjustableSpeed(const std::vector<int>& arrOfSpeeds) {
                downButtonState = false;
           }
 
-          std::string state = handleJoystickValues(data[7], data[8]);
+          JoyconState state = handleJoystickValues(data[7], data[8]);
           int speedSent = currentSpeed;
 
-          if (state == "moving Forwards") {
-               forwards(speedSent);
-          } else if (state == "moving Backwards") {
-               backwards(speedSent);
-          } else if (state == "stopped") {
-               stop();
-          } else if (state == "LStraight") {
-               turnLeft(speedSent);
-          } else {
-               turnRight(speedSent);
+          switch (state) {
+               case JoyconState::FOWARDS:
+                    forwards(speedSent);
+               case JoyconState::BACKWARDS:
+                    backwards(speedSent);
+               case JoyconState::SPIN_RIGHT:
+                    spinRight(speedSent);
+               case JoyconState::SPIN_LEFT:
+                    spinLeft(speedSent);
+               default:
+                    stop();
           }
 
-          std::cout << "State: " << state << "Speed: " << speedSent << std::endl;
-
+          std::cout << "State: " << state << " Speed: " << speedSent << std::endl;
      }
 
      return 0;
 }
+
+

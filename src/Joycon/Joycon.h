@@ -1,4 +1,25 @@
-#pragma once 
+#pragma once
+#include <iostream>
+
+enum class JoyconState {
+    STOPPED,
+    FOWARDS,
+    BACKWARDS,
+    SPIN_RIGHT,
+    SPIN_LEFT
+};
+
+// Define operator<< for JoyconState
+inline std::ostream& operator<<(std::ostream& os, const JoyconState& state) {
+    switch (state) {
+        case JoyconState::STOPPED: return os << "STOPPED";
+        case JoyconState::FOWARDS: return os << "FOWARDS";
+        case JoyconState::BACKWARDS: return os << "BACKWARDS";
+        case JoyconState::SPIN_RIGHT: return os << "SPIN_RIGHT";
+        case JoyconState::SPIN_LEFT: return os << "SPIN_LEFT";
+        default: return os << "UNKNOWN";
+    }
+}
 
 #include "../MotorLib/MotorLib.h"
 #include <hidapi/hidapi.h>
@@ -12,22 +33,19 @@ class Joycon:public Motors {
         unsigned short vendorId;
         unsigned short productId;
         hid_device *device;
-        struct Speeds {
-            int rSpeed;
-            int lSpeed;
-        };
-        Speeds MotorSpeeds;
+
         // this is temp
         std::string state = "Stopped";
 
         Joycon(unsigned short vendorId, unsigned short productId, std::vector<MotorDriver*> motors);
         int initJoycon();
         void test();
-        void JoyconMode(int maxSpeed);
         int AdjustableSpeed(const std::vector<int>&arrOfSpeeds);
+        JoyconState handleJoystickValues(uint8_t rawX, uint8_t rawY);
 
     
     private: 
         long map(long x, long in_min, long in_max, long out_min, long out_max);
-        std::string handleJoystickValues(uint8_t rawX, uint8_t rawY);
 };
+
+// Define operator<< for JoyconState

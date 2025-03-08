@@ -17,24 +17,26 @@ void Motors::stop() {
     for (auto motor : motorArray) {
         motor->setSpeed(0, 0);
     }
-    std::cout << "Stopped" << std::endl;
+    // std::cout << "Stopped" << std::endl;
 }
 
 /* These functions below are only for joycon movement */
 
 void Motors::forwards(int speed) {
+    motorArray[0]->setSpeed(speed, 0);
+    motorArray[1]->setSpeed(speed, 1);
+    motorArray[2]->setSpeed(speed, 0);
+    motorArray[3]->setSpeed(speed, 1);
+}
+
+void Motors::backwards(int speed) {
     motorArray[0]->setSpeed(speed, 1);
     motorArray[1]->setSpeed(speed, 0);
     motorArray[2]->setSpeed(speed, 1);
     motorArray[3]->setSpeed(speed, 0);
 }
 
-void Motors::backwards(int speed) {
-    motorArray[0]->setSpeed(speed, 0);
-    motorArray[1]->setSpeed(speed, 1);
-    motorArray[2]->setSpeed(speed, 0);
-    motorArray[3]->setSpeed(speed, 1);
-}
+/* edit these values */
 
 void Motors::spinRight(int speed) {
     motorArray[0]->setSpeed(speed, 0);

@@ -21,17 +21,14 @@ int main() {
     MotorDriver m3 = MotorDriver(28, 29, 0);
     MotorDriver m4 = MotorDriver(12, 13, 0);
 
-    Motors array = Motors({&m1, &m2, &m3, &m4});
     Joycon left = Joycon(0x057E, 0x2006, {&m1, &m2, &m3, &m4});
 
-    left.AdjustableSpeed({120, 140, 180, 250});
+    left.AdjustableSpeed({20, 40, 80, 150, 180, 210, 250});
 
     std::cout << left.initJoycon() << std::endl;
     if (left.initJoycon() == 1) {
-        std::cout << "Error handled" << std::endl;
         return 1;
     }
-
-    array.stop();
+    
     return 0;
 }
