@@ -23,6 +23,7 @@ $(TARGET): $(OBJS)
 
 clean:
 	rm -f $(OBJS) $(TARGET)
+	rm -f startup.log
 
 run: 
 	sudo ./move
