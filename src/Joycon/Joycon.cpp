@@ -122,12 +122,16 @@ int Joycon::AdjustableSpeed(const std::vector<int>& arrOfSpeeds) {
           switch (state) {
                case JoyconState::FOWARDS:
                     forwards(speedSent);
+                    break;
                case JoyconState::BACKWARDS:
                     backwards(speedSent);
+                    break;
                case JoyconState::SPIN_RIGHT:
                     spinRight(speedSent);
+                    break;
                case JoyconState::SPIN_LEFT:
                     spinLeft(speedSent);
+                    break;
                default:
                     stop();
           }
