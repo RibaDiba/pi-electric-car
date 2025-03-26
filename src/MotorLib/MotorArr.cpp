@@ -17,6 +17,8 @@ void Motors::stop() {
     for (auto motor : motorArray) {
         motor->setSpeed(0, 0);
     }
+    motorArray[4]->sparkSetSpeed(150);
+    motorArray[5]->sparkSetSpeed(150);
     // std::cout << "Stopped" << std::endl;
 }
 
@@ -39,17 +41,23 @@ void Motors::backwards(int speed) {
 /* edit these values */
 
 void Motors::spinRight(int speed) {
-    motorArray[0]->setSpeed(speed, 0);
+    motorArray[0]->setSpeed(speed, 1);
     motorArray[1]->setSpeed(speed, 1);
     motorArray[2]->setSpeed(speed, 1);
-    motorArray[3]->setSpeed(speed, 0);
+    motorArray[3]->setSpeed(speed, 1);
+
+    // motorArray[4]->sparkSetSpeed(195);
+    // motorArray[5]->sparkSetSpeed(195);
 }
 
 void Motors::spinLeft(int speed) {
-    motorArray[0]->setSpeed(speed, 1);
+    motorArray[0]->setSpeed(speed, 0);
     motorArray[1]->setSpeed(speed, 0);
     motorArray[2]->setSpeed(speed, 0);
-    motorArray[3]->setSpeed(speed, 1);
+    motorArray[3]->setSpeed(speed, 0);
+
+    // motorArray[4]->sparkSetSpeed(105);
+    // motorArray[5]->sparkSetSpeed(105);
 }
 
 void Motors::turnRight(int speed) {
