@@ -21,9 +21,12 @@ int main() {
     MotorDriver m3 = MotorDriver(28, 29, 0);
     MotorDriver m4 = MotorDriver(12, 13, 0);
 
-    Joycon left = Joycon(0x057E, 0x2006, {&m1, &m2, &m3, &m4});
+    MotorDriver mf = MotorDriver(23);
+    MotorDriver md = MotorDriver(24);
 
-    left.AdjustableSpeed({20, 40, 80, 150, 180, 210, 250});
+    Joycon left = Joycon(0x057E, 0x2006, {&m1, &m2, &m3, &m4, &mf, &md});
+
+    left.AdjustableSpeed({20, 30, 40, 50, 60, 70, 80, 100, 150, 180, 250});
 
     std::cout << left.initJoycon() << std::endl;
     if (left.initJoycon() == 1) {
