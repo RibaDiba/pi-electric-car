@@ -5,16 +5,25 @@ LDFLAGS = -lwiringPi -lhidapi-hidraw
 
 # Targets
 TARGET = move
-OBJ = main.o
 
-$(TARGET): $(OBJ)
-	$(CXX) $(OBJ) -o $(TARGET) $(LDFLAGS)
+SRCS = src/main.cpp \
+       src/Joycon/Joycon.cpp \
+       src/MotorLib/MotorArr.cpp \
+       src/MotorLib/MotorDriver.cpp
 
-main.o: main.cpp MotorLib.h Joycon.h
-	$(CXX) $(CXXFLAGS) main.cpp
+OBJS = $(SRCS:.cpp=.o)
+all: $(TARGET)
+
+# Link step: combine all object files into the final executable
+$(TARGET): $(OBJS)
+	$(CXX) -o $@ $^ $(LDFLAGS)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o $(TARGET)
+	rm -f $(OBJS) $(TARGET)
+	rm -f startup.log
 
 run: 
 	sudo ./move
