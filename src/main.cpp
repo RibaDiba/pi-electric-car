@@ -2,6 +2,7 @@
 #include "MotorLib/MotorLib.h"
 #include <wiringPi.h>
 #include "Joycon/Joycon.h"
+#include "Joycon_Multiple/Joycons.h"
 
 
  void test() {
@@ -24,12 +25,20 @@ int main() {
     MotorDriver mf = MotorDriver(23);
     MotorDriver md = MotorDriver(24);
 
-    Joycon left = Joycon(0x057E, 0x2006, {&m1, &m2, &m3, &m4, &mf, &md});
+    // Create vectors before passing them to the constructor
+    std::vector<int> speeds = {80, 100, 150, 180, 250};
+    std::vector<MotorDriver*> motors = {&m1, &m2, &m3, &m4, &mf, &md};
+    
+    Joycons obj = Joycons(speeds, motors);
+    obj.initJoycons();
+    obj.run();
 
-    left.AdjustableSpeed({20, 30, 40, 50, 60, 70, 80, 100, 150, 180, 250});
+    // Joycon left = Joycon(0x057E, 0x2006, {&m1, &m2, &m3, &m4, &mf, &md});
 
-    std::cout << left.initJoycon() << std::endl;
-    if (left.initJoycon() == 1) {
+    // left.AdjustableSpeed({20, 30, 40, 50, 60, 70, 80, 100, 150, 180, 250});
+
+    std::cout << obj.initJoycons() << std::endl;
+    if (obj.initJoycons() == 1) {
         return 1;
     }
     
