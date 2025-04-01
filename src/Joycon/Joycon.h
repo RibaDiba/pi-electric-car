@@ -43,6 +43,8 @@ class Joycon:public Motors {
         int AdjustableSpeed(const std::vector<int>&arrOfSpeeds);
         JoyconState handleJoystickValues(uint8_t rawX, uint8_t rawY);
 
+        int twoJoycons(const std::vector<int>&arrOfSpeeds);
+
     
     private: 
         long map(long x, long in_min, long in_max, long out_min, long out_max);
