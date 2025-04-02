@@ -1,11 +1,21 @@
 #pragma once
 #include "Joycons.h"
 
+/*
+Note for the future: this codebase has a lot of issues 
+    - the way accel is handled is scuffed 
+    - spinning right and left is given a constant max speed in the other file 
+    - always sends a speed of 2 no matter what (doesnt affect stopping because it actually calls a static function called stop)
+
+    terrible code that works
+    also i was too lazy to change the names of the file (this is only for 1 joycon)
+*/
+
 Joycons::Joycons(std::vector<int>&arrOfSpeeds, std::vector<MotorDriver*> motors)
     : arrOfSpeeds(arrOfSpeeds), Motors(motors) {
     // init both joycons
     leftJoycon = hid_open(leftVendorId, leftProductId, NULL);
-    rightJoycon = hid_open(rightVendorId, rightProductId, NULL);
+    // rightJoycon = hid_open(rightVendorId, rightProductId, NULL);
 }
 
 // convienent map function
@@ -21,8 +31,8 @@ int Joycons::initJoycons() {
     }
 
     leftJoycon = hid_open(leftVendorId, leftProductId, NULL);
-    rightJoycon = hid_open(rightVendorId, rightProductId, NULL);
-    if (!leftJoycon || !rightJoycon) {
+    // rightJoycon = hid_open(rightVendorId, rightProductId, NULL);
+    if (!leftJoycon) {
         return 1;
     } else {
         return 0;
@@ -56,31 +66,33 @@ JoyconsState Joycons::handleJoystickValues(uint8_t rawX, uint8_t rawY) {
 
 }
 
-int Joycons::handleSpeed(uint8_t rawX, uint8_t rawY, int targetSpeed, int &currentSpeed) {
-    int joystickY = static_cast<int>(rawY);
-    int mappedSpeed;
+int Joycons::handleSpeed(int speedSent, int targetSpeed, int &currentSpeed) {
 
-    if (joystickY < 130 && joystickY > 110) {
-        mappedSpeed = 0;
-    } else if (joystickY < 110) {
-        mappedSpeed = 0;
-    } else {
-        mappedSpeed = map(joystickY, 130, 186, 0, targetSpeed);
-    }
+    // from 2 joycon logic
+    // int joystickY = static_cast<int>(rawY);
+    // int mappedSpeed;
+
+    // if (joystickY < 130 && joystickY > 110) {
+    //     mappedSpeed = 0;
+    // } else if (joystickY < 110) {
+    //     mappedSpeed = 0;
+    // } else {
+    //     mappedSpeed = map(joystickY, 130, 186, 0, targetSpeed);
+    // }
 
     // Acceleration logic
     int accelStep = 2; // Change per cycle
-    if (currentSpeed < mappedSpeed) {
-        currentSpeed = std::min(currentSpeed + accelStep, mappedSpeed);
-    } else if (currentSpeed > mappedSpeed) {
-        currentSpeed = std::max(currentSpeed - accelStep, mappedSpeed);
+    if (currentSpeed < speedSent) {
+        currentSpeed = std::min(currentSpeed + accelStep, speedSent);
+    } else if (currentSpeed > speedSent) {
+        currentSpeed = std::max(currentSpeed - accelStep, speedSent);
     }
 
     return currentSpeed;
 }
 
 int Joycons::run() {
-    unsigned char rightData[61];
+    // unsigned char rightData[61];
     unsigned char leftData[61];
 
     auto lastPressTimeUp = std::chrono::steady_clock::now();
@@ -92,7 +104,7 @@ int Joycons::run() {
     int targetSpeed = arrOfSpeeds[0];
 
     while (true) {
-        int rawRightData = hid_read(rightJoycon, rightData, sizeof(rightData));
+        // int rawRightData = hid_read(rightJoycon, rightData, sizeof(rightData));
         int rawLeftData = hid_read(leftJoycon, leftData, sizeof(leftData));
 
         uint8_t buttonData = leftData[5];
@@ -110,7 +122,10 @@ int Joycons::run() {
         }
 
         JoyconsState state = handleJoystickValues(leftData[7], leftData[8]);
-        int speedSent = handleSpeed(rightData[10], rightData[11], targetSpeed, currentSpeed);
+        if (state == JoyconsState::STOPPED) {
+            currentSpeed = 0;
+        }
+        int speedSent = handleSpeed(targetSpeed, targetSpeed, currentSpeed);
 
         switch (state) {
             case JoyconsState::FOWARDS:

@@ -44,6 +44,6 @@ class Joycons:public Motors {
 
         std::string state = "Stopped";
         JoyconsState handleJoystickValues(uint8_t rawX, uint8_t rawY);
-        int handleSpeed(uint8_t rawX, uint8_t rawY, int targetSpeed, int &currentSpeed);
+        int handleSpeed(int speedSent, int targetSpeed, int &currentSpeed);
         long map(long x, long in_min, long in_max, long out_min, long out_max);
 };
