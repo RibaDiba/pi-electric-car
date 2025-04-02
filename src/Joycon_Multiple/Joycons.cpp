@@ -56,102 +56,82 @@ JoyconsState Joycons::handleJoystickValues(uint8_t rawX, uint8_t rawY) {
 
 }
 
-int Joycons::handleSpeed(uint8_t rawX, uint8_t rawY, int speed) {
-    int joystickX = static_cast<int>(rawX);
-    int joysticky = static_cast<int>(rawY);
-    int speedReturn;
+int Joycons::handleSpeed(uint8_t rawX, uint8_t rawY, int targetSpeed, int &currentSpeed) {
+    int joystickY = static_cast<int>(rawY);
+    int mappedSpeed;
 
-
-
-    // output for joystick debugging
-    // std::cout << "Joystick X: " << joystickX << " Joystick Y: " << joystickY << std::endl;
-    if (joysticky < 130 && joysticky > 110) {
-        joysticky = 0;
-        speedReturn = 0;
-    } else if (joysticky < 110) {
-        joysticky = 0;
-        speedReturn = 0;
+    if (joystickY < 130 && joystickY > 110) {
+        mappedSpeed = 0;
+    } else if (joystickY < 110) {
+        mappedSpeed = 0;
     } else {
-        speedReturn = map(joysticky, 130, 186, 0, speed);
+        mappedSpeed = map(joystickY, 130, 186, 0, targetSpeed);
     }
 
-    return speedReturn;
-}   
+    // Acceleration logic
+    int accelStep = 2; // Change per cycle
+    if (currentSpeed < mappedSpeed) {
+        currentSpeed = std::min(currentSpeed + accelStep, mappedSpeed);
+    } else if (currentSpeed > mappedSpeed) {
+        currentSpeed = std::max(currentSpeed - accelStep, mappedSpeed);
+    }
+
+    return currentSpeed;
+}
 
 int Joycons::run() {
     unsigned char rightData[61];
     unsigned char leftData[61];
 
-    // debounce for button presses
     auto lastPressTimeUp = std::chrono::steady_clock::now();
     auto lastPressTimeDown = std::chrono::steady_clock::now();
     const std::chrono::milliseconds debounceInterval(200);
 
-    int currentSpeed = arrOfSpeeds[0];
+    int currentSpeed = 0;
     int currentSpeedIndex = 0;
+    int targetSpeed = arrOfSpeeds[0];
 
     while (true) {
         int rawRightData = hid_read(rightJoycon, rightData, sizeof(rightData));
-        int rawleftData = hid_read(leftJoycon, leftData, sizeof(leftData));
-    
-        // handle button data
+        int rawLeftData = hid_read(leftJoycon, leftData, sizeof(leftData));
+
         uint8_t buttonData = leftData[5];
         int buttonState = static_cast<int>(buttonData);
-        bool upButtonState = false;
-        bool downButtonState = false;
+        auto now = std::chrono::steady_clock::now();
 
-        if (buttonState == 1) {  // Down button pressed
-            auto now = std::chrono::steady_clock::now();
-            if (now - lastPressTimeDown > debounceInterval) {
-                currentSpeedIndex--;  // Decrease the index
-                if (currentSpeedIndex < 0) {
-                        currentSpeedIndex = 0;  // Prevent going below zero
-                }
-                currentSpeed = arrOfSpeeds[currentSpeedIndex];  // Update the speed
-                downButtonState = true;
-                lastPressTimeDown = now;  // Update the last press time for down button
-            }
+        if (buttonState == 1 && now - lastPressTimeDown > debounceInterval) {
+            currentSpeedIndex = std::max(0, currentSpeedIndex - 1);
+            targetSpeed = arrOfSpeeds[currentSpeedIndex];
+            lastPressTimeDown = now;
+        } else if (buttonState == 2 && now - lastPressTimeUp > debounceInterval) {
+            currentSpeedIndex = std::min((int)arrOfSpeeds.size() - 1, currentSpeedIndex + 1);
+            targetSpeed = arrOfSpeeds[currentSpeedIndex];
+            lastPressTimeUp = now;
         }
-        else if (buttonState == 2) {  // Up button pressed
-            auto now = std::chrono::steady_clock::now();
-            if (now - lastPressTimeUp > debounceInterval) {
-                currentSpeedIndex++;  // Increase the index
-                if (currentSpeedIndex >= arrOfSpeeds.size()) {
-                        currentSpeedIndex = arrOfSpeeds.size() - 1;  // Prevent going beyond the last index
-                }
-                currentSpeed = arrOfSpeeds[currentSpeedIndex];  // Update the speed
-                upButtonState = true;
-                lastPressTimeUp = now;  // Update the last press time for up button
-            }
-        } else {
-            upButtonState = false;
-            downButtonState = false;
-        }
-
-        int speedSent = currentSpeed;
 
         JoyconsState state = handleJoystickValues(leftData[7], leftData[8]);
-        speedSent = handleSpeed(rightData[10], rightData[11], speedSent);
+        int speedSent = handleSpeed(rightData[10], rightData[11], targetSpeed, currentSpeed);
 
         switch (state) {
             case JoyconsState::FOWARDS:
-                 forwards(speedSent);
-                 break;
+                forwards(speedSent);
+                break;
             case JoyconsState::BACKWARDS:
-                 backwards(speedSent);
-                 break;
+                backwards(speedSent);
+                break;
             case JoyconsState::SPIN_RIGHT:
-                 spinRight(speedSent);
-                 break;
+                spinRight(speedSent);
+                break;
             case JoyconsState::SPIN_LEFT:
-                 spinLeft(speedSent);
-                 break;
+                spinLeft(speedSent);
+                break;
             default:
-                 stop();
+                stop();
         }
 
-
         std::cout << "State: " << state << " Speed: " << speedSent << std::endl;
+
+        // std::this_thread::sleep_for(std::chrono::milliseconds(20)); // Smooth acceleration delay
     }
 
     return 0;

@@ -46,24 +46,26 @@ void Motors::backwards(int speed) {
 /* edit these values */
 
 void Motors::spinRight(int speed) {
-    motorArray[0]->setSpeed(speed, 0);
-    motorArray[1]->setSpeed(speed, 0);
-    motorArray[2]->setSpeed(speed, 0);
-    motorArray[3]->setSpeed(speed, 0);
+    motorArray[0]->setSpeed(250, 0);
+    motorArray[1]->setSpeed(250, 0);
+    motorArray[2]->setSpeed(250, 0);
+    motorArray[3]->setSpeed(250, 0);
 
     int mapped = map(speed, 0, 255, 100, 200);
+    std::cout << "Mapped speed for sparks: " << mapped << std::endl;
 
     motorArray[4]->sparkSetSpeed(mapped);
     motorArray[5]->sparkSetSpeed(mapped);
 }
 
 void Motors::spinLeft(int speed) {
-    motorArray[0]->setSpeed(speed, 1);
-    motorArray[1]->setSpeed(speed, 1);
-    motorArray[2]->setSpeed(speed, 1);
-    motorArray[3]->setSpeed(speed, 1);
+    motorArray[0]->setSpeed(250, 1);
+    motorArray[1]->setSpeed(250, 1);
+    motorArray[2]->setSpeed(250, 1);
+    motorArray[3]->setSpeed(250, 1);
 
     int mapped = map(speed, 0, 255, 100, 200);
+    std::cout << "Mapped speed for sparks" << mapped << std::endl;
 
     motorArray[4]->sparkSetSpeed(mapped);
     motorArray[5]->sparkSetSpeed(mapped);
