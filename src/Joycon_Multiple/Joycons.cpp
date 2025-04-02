@@ -5,25 +5,22 @@
 Note for the future: this codebase has a lot of issues 
     - the way accel is handled is scuffed 
     - spinning right and left is given a constant max speed in the other file 
-    - always sends a speed of 2 no matter what (doesnt affect stopping because it actually calls a static function called stop)
+    - always sends a speed of 2 no matter what (doesn't affect stopping because it actually calls a static function called stop)
+    - THE STATE VARIABLE IS LOCAL TO THE FUNCTION??? WHY 
 
     terrible code that works
     also i was too lazy to change the names of the file (this is only for 1 joycon)
 */
 
-Joycons::Joycons(std::vector<int>&arrOfSpeeds, std::vector<MotorDriver*> motors)
+Joycons::Joycons(std::vector<int>& arrOfSpeeds, std::vector<MotorDriver*> motors)
     : arrOfSpeeds(arrOfSpeeds), Motors(motors) {
-    // init both joycons
     leftJoycon = hid_open(leftVendorId, leftProductId, NULL);
-    // rightJoycon = hid_open(rightVendorId, rightProductId, NULL);
 }
 
-// convienent map function
 long Joycons::map(long x, long in_min, long in_max, long out_min, long out_max) {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-// see if joycon is active 
 int Joycons::initJoycons() {
     if (hid_init()) {
         std::cerr << "Failed to Init HID" << std::endl;
@@ -31,57 +28,28 @@ int Joycons::initJoycons() {
     }
 
     leftJoycon = hid_open(leftVendorId, leftProductId, NULL);
-    // rightJoycon = hid_open(rightVendorId, rightProductId, NULL);
-    if (!leftJoycon) {
-        return 1;
-    } else {
-        return 0;
-    }
+    return leftJoycon ? 0 : 1;
 }
 
 JoyconsState Joycons::handleJoystickValues(uint8_t rawX, uint8_t rawY) {
     rawX = ((rawX & 0x0F) << 4) | ((rawX & 0xF0) >> 4);
-
-    int joystickX = static_cast<int>(rawX);
-    int joysticky = static_cast<int>(rawY);
-
-    // joystickX needs to be fixed (my case only?)
-    joystickX = map(joystickX, 55, 215, 75, 190);
+    int joystickX = map(static_cast<int>(rawX), 55, 215, 75, 190);
     int joystickY = static_cast<int>(rawY);
 
-    // output for joystick debugging
-    // std::cout << "Joystick X: " << joystickX << " Joystick Y: " << joystickY << std::endl;
-
-    if (joystickY > 210) {
-         return JoyconsState::FOWARDS;
-    } else if (joystickY < 80) {
-         return JoyconsState::BACKWARDS;
-    } else if (joystickX > 160) {
-         return JoyconsState::SPIN_RIGHT;
-    } else if (joystickX < 80) {
-         return JoyconsState::SPIN_LEFT;
-    } else {
-         return JoyconsState::STOPPED;
-    }
-
+    if (joystickY > 210) return JoyconsState::FOWARDS;
+    if (joystickY < 80) return JoyconsState::BACKWARDS;
+    if (joystickX > 160) return JoyconsState::SPIN_RIGHT;
+    if (joystickX < 80) return JoyconsState::SPIN_LEFT;
+    return JoyconsState::STOPPED;
 }
 
-int Joycons::handleSpeed(int speedSent, int targetSpeed, int &currentSpeed) {
+int Joycons::handleSpeed(int speedSent, int &currentSpeed, JoyconsState state) {
+    int accelStep = 2; // Rate of acceleration per cycle
 
-    // from 2 joycon logic
-    // int joystickY = static_cast<int>(rawY);
-    // int mappedSpeed;
+    if (state == JoyconsState::STOPPED) {
+        speedSent = 0; // Target speed is 0 when stopped, but decelerate smoothly
+    }
 
-    // if (joystickY < 130 && joystickY > 110) {
-    //     mappedSpeed = 0;
-    // } else if (joystickY < 110) {
-    //     mappedSpeed = 0;
-    // } else {
-    //     mappedSpeed = map(joystickY, 130, 186, 0, targetSpeed);
-    // }
-
-    // Acceleration logic
-    int accelStep = 2; // Change per cycle
     if (currentSpeed < speedSent) {
         currentSpeed = std::min(currentSpeed + accelStep, speedSent);
     } else if (currentSpeed > speedSent) {
@@ -92,9 +60,7 @@ int Joycons::handleSpeed(int speedSent, int targetSpeed, int &currentSpeed) {
 }
 
 int Joycons::run() {
-    // unsigned char rightData[61];
     unsigned char leftData[61];
-
     auto lastPressTimeUp = std::chrono::steady_clock::now();
     auto lastPressTimeDown = std::chrono::steady_clock::now();
     const std::chrono::milliseconds debounceInterval(200);
@@ -103,10 +69,10 @@ int Joycons::run() {
     int currentSpeedIndex = 0;
     int targetSpeed = arrOfSpeeds[0];
 
-    while (true) {
-        // int rawRightData = hid_read(rightJoycon, rightData, sizeof(rightData));
-        int rawLeftData = hid_read(leftJoycon, leftData, sizeof(leftData));
+    JoyconsState lastState = JoyconsState::STOPPED; 
 
+    while (true) {
+        int rawLeftData = hid_read(leftJoycon, leftData, sizeof(leftData));
         uint8_t buttonData = leftData[5];
         int buttonState = static_cast<int>(buttonData);
         auto now = std::chrono::steady_clock::now();
@@ -116,16 +82,23 @@ int Joycons::run() {
             targetSpeed = arrOfSpeeds[currentSpeedIndex];
             lastPressTimeDown = now;
         } else if (buttonState == 2 && now - lastPressTimeUp > debounceInterval) {
-            currentSpeedIndex = std::min((int)arrOfSpeeds.size() - 1, currentSpeedIndex + 1);
+            currentSpeedIndex = std::min(static_cast<int>(arrOfSpeeds.size()) - 1, currentSpeedIndex + 1);
             targetSpeed = arrOfSpeeds[currentSpeedIndex];
             lastPressTimeUp = now;
         }
 
         JoyconsState state = handleJoystickValues(leftData[7], leftData[8]);
-        if (state == JoyconsState::STOPPED) {
-            currentSpeed = 0;
+        int speedSent = handleSpeed(targetSpeed, currentSpeed, state);
+
+        if (speedSent > 0 && state == JoyconsState::STOPPED) {
+            if (lastState == JoyconsState::SPIN_RIGHT || lastState == JoyconsState::SPIN_LEFT) {
+                lastState = state;
+            } else {
+                state = lastState;  
+            }
+        } else {
+            lastState = state;
         }
-        int speedSent = handleSpeed(targetSpeed, targetSpeed, currentSpeed);
 
         switch (state) {
             case JoyconsState::FOWARDS:
@@ -144,9 +117,7 @@ int Joycons::run() {
                 stop();
         }
 
-        std::cout << "State: " << state << " Speed: " << speedSent << std::endl;
-
-        // std::this_thread::sleep_for(std::chrono::milliseconds(20)); // Smooth acceleration delay
+        std::cout << "State: " << state << " Last State: " << lastState << " Speed: " << speedSent << std::endl;
     }
 
     return 0;
