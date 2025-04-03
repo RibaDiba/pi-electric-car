@@ -30,26 +30,26 @@ void Motors::stop() {
 /* These functions below are only for joycon movement */
 
 void Motors::forwards(int speed) {
-    motorArray[0]->setSpeed(speed, 1);
-    motorArray[1]->setSpeed(speed, 0);
-    motorArray[2]->setSpeed(speed, 1);
-    motorArray[3]->setSpeed(speed, 0);
-}
-
-void Motors::backwards(int speed) {
     motorArray[0]->setSpeed(speed, 0);
     motorArray[1]->setSpeed(speed, 1);
     motorArray[2]->setSpeed(speed, 0);
     motorArray[3]->setSpeed(speed, 1);
 }
 
+void Motors::backwards(int speed) {
+    motorArray[0]->setSpeed(speed, 1);
+    motorArray[1]->setSpeed(speed, 0);
+    motorArray[2]->setSpeed(speed, 1);
+    motorArray[3]->setSpeed(speed, 0);
+}
+
 /* edit these values */
 
 void Motors::spinRight(int speed) {
-    motorArray[0]->setSpeed(250, 0);
-    motorArray[1]->setSpeed(250, 0);
-    motorArray[2]->setSpeed(250, 0);
-    motorArray[3]->setSpeed(250, 0);
+    motorArray[0]->setSpeed(250, 1);
+    motorArray[1]->setSpeed(250, 1);
+    motorArray[2]->setSpeed(250, 1);
+    motorArray[3]->setSpeed(250, 1);
 
     int mapped = map(speed, 0, 255, 100, 200);
     std::cout << "Mapped speed for sparks: " << mapped << std::endl;
@@ -59,10 +59,10 @@ void Motors::spinRight(int speed) {
 }
 
 void Motors::spinLeft(int speed) {
-    motorArray[0]->setSpeed(250, 1);
-    motorArray[1]->setSpeed(250, 1);
-    motorArray[2]->setSpeed(250, 1);
-    motorArray[3]->setSpeed(250, 1);
+    motorArray[0]->setSpeed(250, 0);
+    motorArray[1]->setSpeed(250, 0);
+    motorArray[2]->setSpeed(250, 0);
+    motorArray[3]->setSpeed(250, 0);
 
     int mapped = map(speed, 0, 255, 100, 200);
     std::cout << "Mapped speed for sparks" << mapped << std::endl;
