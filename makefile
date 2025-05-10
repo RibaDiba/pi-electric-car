@@ -9,7 +9,8 @@ TARGET = move
 SRCS = src/main.cpp \
        src/Joycon/Joycon.cpp \
        src/MotorLib/MotorArr.cpp \
-       src/MotorLib/MotorDriver.cpp
+       src/MotorLib/MotorDriver.cpp \
+       src/Joycon_Multiple/Joycons.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 all: $(TARGET)

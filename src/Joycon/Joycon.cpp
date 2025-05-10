@@ -142,4 +142,23 @@ int Joycon::AdjustableSpeed(const std::vector<int>& arrOfSpeeds) {
      return 0;
 }
 
+int Joycon::twoJoycons(const std::vector<int>& arrOfSpeeds) {
+
+     unsigned char data[61];
+
+     // debounce for button presses
+     auto lastPressTimeUp = std::chrono::steady_clock::now();
+     auto lastPressTimeDown = std::chrono::steady_clock::now();
+     const std::chrono::milliseconds debounceInterval(200);
+
+     int currentSpeed = arrOfSpeeds[0];
+     int currentSpeedIndex = 0;
+
+     if (!device) {
+          std::cerr << "Failed to open Joycons" << std::endl;
+          return 1;
+     }
+     return 0;
+}
+
 

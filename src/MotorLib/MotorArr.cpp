@@ -6,6 +6,11 @@ Motors::Motors(MotorType::motorArray_t motors)
     std::cout << "Motors Initialized with " << motors.size() << " motor(s)." << std::endl;
 }
 
+// util function 
+long Motors::map(long x, long in_min, long in_max, long out_min, long out_max) {
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
 // loops through and debugs all drivers in array 
 void Motors::debugAll(int time) {
     for (auto motor : motorArray) {
@@ -41,23 +46,29 @@ void Motors::backwards(int speed) {
 /* edit these values */
 
 void Motors::spinRight(int speed) {
-    motorArray[0]->setSpeed(speed, 1);
-    motorArray[1]->setSpeed(speed, 1);
-    motorArray[2]->setSpeed(speed, 1);
-    motorArray[3]->setSpeed(speed, 1);
+    motorArray[0]->setSpeed(250, 1);
+    motorArray[1]->setSpeed(250, 1);
+    motorArray[2]->setSpeed(250, 1);
+    motorArray[3]->setSpeed(250, 1);
 
-    // motorArray[4]->sparkSetSpeed(195);
-    // motorArray[5]->sparkSetSpeed(195);
+    int mapped = map(speed, 0, 255, 100, 200);
+    std::cout << "Mapped speed for sparks: " << mapped << std::endl;
+
+    motorArray[4]->sparkSetSpeed(mapped);
+    motorArray[5]->sparkSetSpeed(mapped);
 }
 
 void Motors::spinLeft(int speed) {
-    motorArray[0]->setSpeed(speed, 0);
-    motorArray[1]->setSpeed(speed, 0);
-    motorArray[2]->setSpeed(speed, 0);
-    motorArray[3]->setSpeed(speed, 0);
+    motorArray[0]->setSpeed(250, 0);
+    motorArray[1]->setSpeed(250, 0);
+    motorArray[2]->setSpeed(250, 0);
+    motorArray[3]->setSpeed(250, 0);
 
-    // motorArray[4]->sparkSetSpeed(105);
-    // motorArray[5]->sparkSetSpeed(105);
+    int mapped = map(speed, 0, 255, 100, 200);
+    std::cout << "Mapped speed for sparks" << mapped << std::endl;
+
+    motorArray[4]->sparkSetSpeed(mapped);
+    motorArray[5]->sparkSetSpeed(mapped);
 }
 
 void Motors::turnRight(int speed) {

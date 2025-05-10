@@ -1,0 +1,9 @@
+# ignore the stuff that gets built 
+
+move
+startup.log
+src/Joycon/Joycon.o
+src/Joycon_Multiple/Joycons.o
+src/MotorLib/MotorArr.o
+src/MotorLib/MotorDriver.o
+src/main.o
