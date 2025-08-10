@@ -1,45 +1,51 @@
-This repo contains information on a electric car made with e-scooter motors, included is important information
+# pi-electric-car
 
-## Wire notes 
+**A Raspberry Pi–powered electric vehicle controlled via Joy-Con.**  
+This project enables an electric car built from e-scooter motors to be driven using a Joy-Con controller over Bluetooth.
 
-- [Motor Driver Pin] = [WiringPi Pin] = [Labeled Wire Number]
+---
 
-- pwm 1 = 2 = 5
-- dir 0 = 14 = 4
-- dir 1 = 1 = 6
-- pwm 0 = 0 = 7
-- pwm 3 = 12 = 3
-- dir 3 = 13 = 2
-- pwm 2 = 28 = 1
-- dir 2 = 29 = 0
+## ​ Overview
+- **Purpose**: Turn a Raspberry Pi and e-scooter motors into a Joy-Con–controlled electric car for the Odessey of the Mind HS competition.
+- **Built with**: C++, WiringPi, Makefile, Joy-Con Bluetooth interface.
 
-## Joycon Notes
+---
 
-Joycons are used as the control system, using bluetooth the joycon sends a 42 byte long response in which it details information about the rumble, joystick, button handling, etc. This information is for the left joycon. There are also values that are sent if two buttons are pressed at the same time, these are just individual.
+##  Features
+- 4 Wheel differential drive, using a sproket and chain drivetrain.
+- Real-time control via joystick input and button presses.
+- Customizable wiring and input mapping for ease of modification.
+- Ability to execute in place turns due to drive train desgin
 
-- Byte 5: Button Handling
-     - Up = 02
-     - Down = 01
-     - Right = 04
-     - Left = 08
-     - L = 40
-     - ZR = 80
-     - Sr = 10
-     - LR = 20
-- Byte 4: Button Handling (for some unique buttons)
-     - Minus = 01
-     - Capture Button = 20
-     - Joystick Button = 08
-- Byte 7: X nimble on joystick 
-- Byte 8: Y nimble on joystick
+---
 
-## Direction Mapping Notes 
+##  Joy-Con Input Mapping
 
-- Turn left and straight: X  > 80 + 200 > Y > 160
-- Turn right and straight: x > 170 + 200 > Y > 170
+**Info**: Below is the results of a brief investigation to reverse engineering the joycon bluetooth interface
 
-- Go forwards: just a Y value above 200
-- Go backwards: Just a Y value below 80
+- The Joy-Con sends a 42-byte Bluetooth packet.
+- Byte mappings:
+  - Byte 5: Buttons (Up = `0x02`, Down = `0x01`, Right = `0x04`, etc.)
+  - Byte 4: Special buttons (Minus = `0x01`, Capture = `0x20`, etc.)
+  - Byte 7/8: Joystick X/Y values.
 
-- Go left and forwards
+---
+
+##  Control Logic
+
+**Info**: These numbers come from the internal joycon bluetooth interface
+
+- **Go forward**: Y > 200  
+- **Go backward**: Y < 80  
+- **Turn left**: X > 80 **and** Y > 160  
+- **Turn right**: X > 170 **and** Y > 170
+
+---
+
+##  Setup & Build
+```bash
+git clone https://github.com/RibaDiba/pi-electric-car.git
+cd pi-electric-car
+make
+sudo ./run-car
 
