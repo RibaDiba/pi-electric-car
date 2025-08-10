@@ -3,12 +3,12 @@
 ![Platform](https://img.shields.io/badge/Platform-Raspberry_PI-informational?color=B2113F&logo=raspberrypi&logoColor=white&style=flat
 ) ![Language](https://img.shields.io/badge/language-C%2B%2B-lightgrey)
 
-<p align="center">
+<p>
   <a href="https://github.com/RibaDiba" target="_blank" rel="noopener noreferrer">
-    <img src="https://avatars.githubusercontent.com/u/96350741?v=4" alt="@RibaDiba" width="80" height="80" style="border-radius:50%; margin-right:10px;" />
+    <img src="https://images.weserv.nl/?url=avatars.githubusercontent.com/u/96350741?v=4&mask=circle&maxage=7d" width="80" height="80" alt="@RibaDiba" />
   </a>
   <a href="https://github.com/AnotherUser" target="_blank" rel="noopener noreferrer">
-    <img src="https://avatars.githubusercontent.com/u/118085362?v=4" alt="@AnotherUser" width="80" height="80" style="border-radius:50%;" />
+    <img src="https://images.weserv.nl/?url=avatars.githubusercontent.com/u/118085362?v=4&mask=circle&maxage=7d" width="80" height="80" alt="@AnotherUser" />
   </a>
 </p>
 
@@ -16,7 +16,7 @@
 This project enables an electric car built from e-scooter motors to be driven using a Joy-Con controller over Bluetooth.
 
 [Link to CAD file here](https://cad.onshape.com/documents/f188a9c0193ae862e4d85774/w/2e1b61a494eceb673373fd07/e/9c9974e0483e9adc0cc3e6ba?renderMode=0&uiState=6898a2caabd109049a96fbdb)  
-_Created by @iamgod5_
+_Created by [@iamgod5](https://github.com/iamgod5)_
 
 ---
 
