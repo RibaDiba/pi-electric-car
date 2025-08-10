@@ -3,6 +3,8 @@
 **A Raspberry Pi–powered electric vehicle controlled via Joy-Con.**  
 This project enables an electric car built from e-scooter motors to be driven using a Joy-Con controller over Bluetooth.
 
+[Link to CAD file here](https://cad.onshape.com/documents/f188a9c0193ae862e4d85774/w/2e1b61a494eceb673373fd07/e/9c9974e0483e9adc0cc3e6ba?renderMode=0&uiState=6898a2caabd109049a96fbdb)
+
 ---
 
 ## ​ Overview
