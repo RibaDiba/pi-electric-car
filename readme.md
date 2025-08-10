@@ -1,9 +1,17 @@
 # pi-electric-car
 
+![Platform](https://img.shields.io/badge/Platform-Raspberry_PI-informational?color=B2113F&logo=raspberrypi&logoColor=white&style=flat
+) ![Language](https://img.shields.io/badge/language-C%2B%2B-lightgrey)
+![Contributors](https://img.shields.io/github/contributors/RibaDiba/pi-electric-car?color=informational&style=flat)
+
+[![Contributors](https://contrib.rocks/image?repo=RibaDiba/pi-electric-car)](https://github.com/RibaDiba/pi-electric-car/graphs/contributors)
+
+
 **A Raspberry Pi–powered electric vehicle controlled via Joy-Con.**  
 This project enables an electric car built from e-scooter motors to be driven using a Joy-Con controller over Bluetooth.
 
-[Link to CAD file here](https://cad.onshape.com/documents/f188a9c0193ae862e4d85774/w/2e1b61a494eceb673373fd07/e/9c9974e0483e9adc0cc3e6ba?renderMode=0&uiState=6898a2caabd109049a96fbdb)
+[Link to CAD file here](https://cad.onshape.com/documents/f188a9c0193ae862e4d85774/w/2e1b61a494eceb673373fd07/e/9c9974e0483e9adc0cc3e6ba?renderMode=0&uiState=6898a2caabd109049a96fbdb)  
+_Created by @imgod5_
 
 ---
 
