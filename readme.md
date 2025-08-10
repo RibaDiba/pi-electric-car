@@ -11,6 +11,22 @@ This project enables an electric car built from e-scooter motors to be driven us
 
 ---
 
+## Repository Structure
+
+| Path / File | Description |
+|-------------|-------------|
+| **`Makefile`** | Build instructions for compiling the C++ source code. Defines targets for building and cleaning the project. |
+| **`main.cpp`** | Main program logic for reading Joy-Con input and controlling the car’s motors via WiringPi. |
+| **`joycon.h`** | Header file defining constants, function declarations, and data structures for Joy-Con Bluetooth communication. |
+| **`joycon.cpp`** | Implementation file containing functions to read and parse Joy-Con input data. |
+| **`joycons.h`** | Header file for Multi-Joycon bluetooth communication, defining constants, functions, and data structures |
+| **`joycons.cpp`** | Implementation file containing  |
+| **`MotorLib.h`** | Header defining motor control function prototypes and constants, includes definition for both control of sinular drivers as well as an array. |
+| **`MotorDriver.cpp`** | Implementation for the control of singular motor drivers. |
+| **`MotorArr.cpp`** | Implementation for the control of an array of motor drivers |
+
+---
+
 ##  Features
 - 4 Wheel differential drive, using a sproket and chain drivetrain.
 - Real-time control via joystick input and button presses.
