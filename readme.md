@@ -5,10 +5,10 @@
 
 <p>
   <a href="https://github.com/RibaDiba" target="_blank" rel="noopener noreferrer">
-    <img src="https://images.weserv.nl/?url=avatars.githubusercontent.com/u/96350741?v=4&mask=circle&maxage=7d" width="40" height="40" alt="@RibaDiba" />
+    <img src="https://images.weserv.nl/?url=avatars.githubusercontent.com/u/96350741?v=4&mask=circle&maxage=7d" width="60" height="60" alt="@RibaDiba" />
   </a>
-  <a href="https://github.com/AnotherUser" target="_blank" rel="noopener noreferrer">
-    <img src="https://images.weserv.nl/?url=avatars.githubusercontent.com/u/118085362?v=4&mask=circle&maxage=7d" width="40" height="40" alt="@AnotherUser" />
+  <a href="https://github.com/iamgod5" target="_blank" rel="noopener noreferrer">
+    <img src="https://images.weserv.nl/?url=avatars.githubusercontent.com/u/118085362?v=4&mask=circle&maxage=7d" width="60" height="60" alt="@iamgod5" />
   </a>
 </p>
 
