@@ -3,32 +3,14 @@
 ![Platform](https://img.shields.io/badge/Platform-Raspberry_PI-informational?color=B2113F&logo=raspberrypi&logoColor=white&style=flat
 ) ![Language](https://img.shields.io/badge/language-C%2B%2B-lightgrey)
 
-<style>
-  .avatar-container {
-    display: flex;
-    gap: 5px; 
-    align-items: center; 
-    margin-bottom: 20px;
-  }
-  .avatar-container a img {
-    width: 80px;
-    height: 80px;       
-    border-radius: 50%; 
-    object-fit: cover;  
-    display: block;     
-  }
-</style>
-
-<div class="avatar-container">
+<p align="center">
   <a href="https://github.com/RibaDiba" target="_blank" rel="noopener noreferrer">
-    <img src="https://avatars.githubusercontent.com/u/96350741?v=4" alt="@RibaDiba"/>
+    <img src="https://avatars.githubusercontent.com/u/96350741?v=4" alt="@RibaDiba" width="80" height="80" style="border-radius:50%; margin-right:10px;" />
   </a>
-
   <a href="https://github.com/AnotherUser" target="_blank" rel="noopener noreferrer">
-    <img src="https://avatars.githubusercontent.com/u/118085362?v=4" alt="@iamgod5"/>
+    <img src="https://avatars.githubusercontent.com/u/118085362?v=4" alt="@AnotherUser" width="80" height="80" style="border-radius:50%;" />
   </a>
-</div>
-
+</p>
 
 **A Raspberry Pi–powered electric vehicle controlled via Joy-Con.**  
 This project enables an electric car built from e-scooter motors to be driven using a Joy-Con controller over Bluetooth.
