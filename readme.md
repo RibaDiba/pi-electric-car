@@ -3,14 +3,22 @@
 ![Platform](https://img.shields.io/badge/Platform-Raspberry_PI-informational?color=B2113F&logo=raspberrypi&logoColor=white&style=flat
 ) ![Language](https://img.shields.io/badge/language-C%2B%2B-lightgrey)
 
-<p>
-  <a href="https://github.com/RibaDiba" target="_blank" rel="noopener noreferrer">
-    <img src="https://images.weserv.nl/?url=avatars.githubusercontent.com/u/96350741?v=4&mask=circle&maxage=7d" width="60" height="60" alt="@RibaDiba" />
-  </a>
-  <a href="https://github.com/iamgod5" target="_blank" rel="noopener noreferrer">
-    <img src="https://images.weserv.nl/?url=avatars.githubusercontent.com/u/118085362?v=4&mask=circle&maxage=7d" width="60" height="60" alt="@iamgod5" />
-  </a>
-</p>
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/RibaDiba">
+        <img src="https://images.weserv.nl/?url=avatars.githubusercontent.com/u/96350741?v=4&mask=circle&maxage=7d" width="60" height="60" alt="@RibaDiba"/><br />
+        <sub><b>RibaDiba</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/iamgod5">
+        <img src="https://images.weserv.nl/?url=avatars.githubusercontent.com/u/118085362?v=4&mask=circle&maxage=7d" width="60" height="60" alt="@iamgod5"/><br />
+        <sub><b>iamgod5</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>
 
 **A Raspberry Pi–powered electric vehicle controlled via Joy-Con.**  
 This project enables an electric car built from e-scooter motors to be driven using a Joy-Con controller over Bluetooth.
