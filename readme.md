@@ -1,7 +1,9 @@
 # pi-electric-car
 
-![Platform](https://img.shields.io/badge/Platform-Raspberry_PI-informational?color=B2113F&logo=raspberrypi&logoColor=white&style=flat
-) ![Language](https://img.shields.io/badge/language-C%2B%2B-lightgrey)
+![Platform](https://img.shields.io/badge/Platform-Raspberry_PI-informational?color=B2113F&logo=raspberrypi&logoColor=white&style=flat)
+![Language](https://img.shields.io/badge/language-C%2B%2B-lightgrey)
+![WiringPi](https://img.shields.io/badge/Library-WiringPi-blue?logo=c&logoColor=white&style=flat)
+![YOLOv11](https://img.shields.io/badge/Model-YOLOv11-00FF00?logo=ultralytics&logoColor=black&style=flat)
 
 <table>
   <tr>
